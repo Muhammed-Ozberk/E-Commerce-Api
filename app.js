@@ -4,7 +4,6 @@ const app = express();
 const sequelize = require('./src/db/database');
 const path = require('path');
 
-
 app.use("/uploads", express.static(path.join(__dirname,'/src/uploads')));
 
 
