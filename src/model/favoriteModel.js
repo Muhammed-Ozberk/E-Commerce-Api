@@ -10,6 +10,8 @@ const Favorite = sequelize.define('favorites_table', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-});
+}, {
+   timestamps: false
+ });
 
 module.exports = Favorite;
