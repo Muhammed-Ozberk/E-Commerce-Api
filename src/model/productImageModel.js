@@ -16,6 +16,8 @@ const ProductImage = sequelize.define('product_image_table', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
-});
+}, {
+   timestamps: false
+ });
 
 module.exports = ProductImage;
