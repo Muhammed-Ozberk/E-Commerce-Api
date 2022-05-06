@@ -12,6 +12,8 @@ const Cart = sequelize.define('cart_table', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-});
+}, {
+   timestamps: false
+ });
 
 module.exports = Cart;
