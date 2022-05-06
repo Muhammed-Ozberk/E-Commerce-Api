@@ -20,6 +20,8 @@ const Slider = sequelize.define('slider_table', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
-},);
+}, {
+   timestamps: false
+ });
 
 module.exports = Slider;
