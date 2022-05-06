@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const sequelize = require('../db/database');
 
-const User = sequelize.define('user_info_table', {
+const User = sequelize.define('users_table', {
     id: {
        type: Sequelize.INTEGER,
        autoIncrement: true,
@@ -27,8 +27,7 @@ const User = sequelize.define('user_info_table', {
       defaultValue:"default.jpg"
     }
 }, {
-   timestamps:true,
-   updatedAt:false
-});
+   timestamps: false
+ });
 
 module.exports = User;
