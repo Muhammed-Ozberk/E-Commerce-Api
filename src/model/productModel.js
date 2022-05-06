@@ -28,6 +28,8 @@ const Product = sequelize.define('product_table', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
-});
+}, {
+   timestamps: false
+ });
 
 module.exports = Product;
