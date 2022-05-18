@@ -53,10 +53,21 @@ const favoriList = async (req, res, next) => {
         if (!favoriList) {
             res.json({ message: 'Favorilerdeki ürünler getirilirken bir hata oluştu', status: false });
         } else {
+            let newList = new Array();
+            favoriList[0].forEach(element => {
+                let newFav = {
+                    productId: element.productId,
+                    image: element.image,
+                    price: element.price,
+                    title: element.title,
+                    isFavorite:true
+                }
+                newList.push(newFav);
+            });
             if (favoriList.length === 0) {
                 res.json({ message: 'Favorilerde hiç ürün bulunamadı', status: true, });
             } else {
-                res.json({ message: 'Favorilerdeki ürünler başarıyla getirildi', status: true, data: favoriList[0] });
+                res.json({ message: 'Favorilerdeki ürünler başarıyla getirildi', status: true, data: newList });
             }
         }
     } catch (error) {

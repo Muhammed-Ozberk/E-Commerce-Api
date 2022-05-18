@@ -8,7 +8,7 @@ const cartAdd = async (req, res, next) => {
         const userToken = Token(req.headers.authorization);
         const cart = await Cart.findOne({ where: { userId: (await userToken).userId } });
         if (!cart) {
-            const cart = await Cart.create(({ userId: req.body.userId }));
+            const cart = await Cart.create(({ userId: (await userToken).userId }));
             if (!cart) {
                 res.json({ message: 'Sepet oluşturulurken bir hata oluştu', status: false });
             } else {
@@ -24,7 +24,7 @@ const cartAdd = async (req, res, next) => {
                 }
             }
         } else {
-            const product = await CartItem.findOne({ where: { productId: req.body.productId } });
+            const product = await CartItem.findOne({ where: { productId: req.body.productId, cartId: cart.id } });
             if (!product) {
                 const productAdd = await CartItem.create(({
                     cartId: cart.id,
@@ -57,11 +57,15 @@ const cartBring = async (req, res, next) => {
         const userToken = Token(req.headers.authorization);
         const cart = await Cart.findOne({ where: { userId: (await userToken).userId } });
         if (!cart) {
-            res.json({ message: 'Sepetinizde ürün bulunamadı', status: true });
+            let totalPrice = 0;
+            let prod = [];
+            res.json({ message: 'Sepetinizde ürün bulunamadı', status: true, data: { products: prod, totalPrice } });
         } else {
             const cartItem = await CartItem.findOne({ where: { cartId: cart.id } });
             if (!cartItem) {
-                res.json({ message: 'Sepetinizde ürün bulunamadı', status: true });
+                let totalPrice = 0;
+                let prod = [];
+                res.json({ message: 'Sepetinizde ürün bulunamadı', status: true, data: { products: prod, totalPrice } });
             } else {
                 const products = await sequelize.query(`select productId,image,title,price,productQuantity
                     from product_tables 

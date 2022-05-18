@@ -1,5 +1,7 @@
 const Product = require('../model/productModel');
 const sequelize = require('sequelize');
+const Favorite = require('../model/favoriteModel');
+const Token = require('../config/token');
 
 const search = async (req, res, next) => {
     try {
@@ -25,13 +27,52 @@ const search = async (req, res, next) => {
         if (!searchList) {
             res.json({ message: 'Ürünler getirilirken bir hata oluştu', status: false })
         } else {
-            res.json({
-                message: 'Ürünler başarıyla getirildi',
-                status: true,
-                data: {
-                    searchList
-                }
-            });
+            if (!req.headers.authorization) {
+                let newList = new Array();
+                searchList.forEach(element => {
+                    let newPro = {
+                        id: element.id,
+                        image: element.image,
+                        price: element.price,
+                        title: element.title,
+                        isFavorite: false
+                    }
+                    newList.push(newPro);
+                });
+                res.json({ message: "Ürünler başarıyla getirildi", status: true, data: newList });
+            } else {
+                const userToken = Token(req.headers.authorization);
+                const favori = await Favorite.findAll({ attributes: ['productId'], where: { userId: (await userToken).userId } });
+                let newList = new Array();
+                searchList.forEach(element => {
+                    let item = false;
+                    favori.forEach(pro => {
+                        if (pro.productId === element.id) {
+                            item = true;
+                        }
+                    });
+                    if (item) {
+                        let produc = {
+                            id: element.id,
+                            image: element.image,
+                            price: element.price,
+                            title: element.title,
+                            isFavorite: true
+                        }
+                        newList.push(produc);
+                    } else {
+                        let produc = {
+                            id: element.id,
+                            image: element.image,
+                            price: element.price,
+                            title: element.title,
+                            isFavorite: false
+                        }
+                        newList.push(produc);
+                    }
+                });
+                res.json({ message: "Ürünler başarıyla getirildi", status: true, data: newList });
+            }
         }
     } catch (error) {
         res.json({ message: 'Arama yapılırken bilinmeyen bir hata oluştu', status: false });
