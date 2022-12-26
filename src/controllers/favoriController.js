@@ -46,10 +46,10 @@ const favoriRemove = async (req, res, next) => {
 const favoriList = async (req, res, next) => {
     try {
         const userToken = Token(req.headers.authorization);
-        const favoriList = await sequelize.query(`select productId,image,price,title from product_tables 
+        const favoriList = await sequelize.query(`select "productId","image","price",title from product_tables 
         inner join favorites_tables  on
-        product_tables.id = favorites_tables.productId and
-        favorites_tables.userId = ${(await userToken).userId}`);
+        product_tables.id = favorites_tables."productId" and
+        favorites_tables."userId" = ${(await userToken).userId}`);
         if (!favoriList) {
             res.json({ message: 'Favorilerdeki ürünler getirilirken bir hata oluştu', status: false });
         } else {
