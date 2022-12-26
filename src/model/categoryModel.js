@@ -12,6 +12,10 @@ const Category = sequelize.define('category_table', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
+    image: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
 }, {
    timestamps: false
  });
