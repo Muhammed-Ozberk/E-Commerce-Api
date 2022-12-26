@@ -67,11 +67,11 @@ const cartBring = async (req, res, next) => {
                 let prod = [];
                 res.json({ message: 'Sepetinizde ürün bulunamadı', status: true, data: { products: prod, totalPrice } });
             } else {
-                const products = await sequelize.query(`select productId,image,title,price,productQuantity
-                    from product_tables 
-                    inner join cart_item_tables  on
-                    product_tables.id = cart_item_tables.productId and
-                    cart_item_tables.cartId = ${cart.id}`);
+                const products = await sequelize.query(`select "productId","image",title,"price",cart_item_tables."productQuantity"
+                from product_tables 
+                inner join cart_item_tables  on
+                product_tables.id = cart_item_tables."productId" and
+                cart_item_tables."cartId" = ${cart.id}`);
                 if (!products) {
                     res.json({ message: 'Sepetinizdeki ürünler getirilirken bir hata oluştu', status: false });
                 } else {
