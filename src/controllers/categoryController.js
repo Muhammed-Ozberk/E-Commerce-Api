@@ -28,7 +28,7 @@ const productsList = async (req, res, next) => {
     try {
         const productLlist = await Product.findAll({ attributes: ['id', 'image', 'price', 'title'], where: { categoryId: req.body.categoryId } });
         if (!productLlist) {
-            res.json({ message: "Ürünler getirilirken bir hata oluştu", stattus: false });
+            res.json({ message: "Ürünler getirilirken bir hata oluştu", status: false });
         } else {
             if (!req.headers.authorization) {
                 let newList = new Array();
